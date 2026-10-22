@@ -152,7 +152,7 @@ def test_issue_search_pages_and_rejects_overflow(monkeypatch: MonkeyPatch) -> No
 def test_adoption_decision_is_distinct_from_actual_implementation(merged: bool, expected: str) -> None:
     """An adoption decision alone never claims that an open PR has landed."""
     status = intake.implementation_status(
-        client=QueueGitHub([{"merged": merged, "merge_commit_sha": TIP}]),
+        client=QueueGitHub([{"merged": merged, "merge_commit_sha": TIP, "base": {"ref": "main"}}]),
         repository="lgtm-raycast/brew",
         decision={"disposition": "adopt", "pull_request": 4},
     )
@@ -312,3 +312,14 @@ def test_cli_requires_scoped_token_and_prints_only_dry_run(monkeypatch: MonkeyPa
     monkeypatch.setattr(intake, "run", lambda **kwargs: "report preview")
     intake.main()
     assert_that(capsys.readouterr().out).contains("report preview")
+
+
+def test_merge_into_feature_branch_is_not_reported_as_applied() -> None:
+    """A stacked or staging merge is not implementation on maintained main."""
+    status = intake.implementation_status(
+        client=QueueGitHub([{"merged": True, "merge_commit_sha": TIP, "base": {"ref": "feature/staging"}}]),
+        repository="lgtm-raycast/brew",
+        decision={"disposition": "adopt", "pull_request": 4},
+    )
+    assert_that(status).contains("not applied to main")
+    assert_that(status).does_not_contain("merged in #4")

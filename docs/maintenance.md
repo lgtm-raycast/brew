@@ -38,9 +38,9 @@ original full upstream SHA, for example:
 }
 ```
 
-An open or closed-unmerged PR is never reported as applied. Skipped candidates remain traceable. If the intake
-approaches its size limit, archive only resolved entries into versioned history in a reviewed PR; preserve unresolved
-candidates and repair the intake explicitly before discovery resumes.
+An open, closed-unmerged, or feature-branch-only merged PR is never reported as applied to maintained main. Skipped
+candidates remain traceable. If the intake approaches its size limit, archive only resolved entries into versioned
+history in a reviewed PR; preserve unresolved candidates and repair the intake explicitly before discovery resumes.
 
 ## Hermes scope
 

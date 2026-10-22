@@ -38,9 +38,9 @@ For a clearly bounded patch, bug fix, performance improvement, or documentation 
    `.upstream/decisions.json`; a decision is not proof of a merge.
 4. Review the complete final diff against the policy and standards. Record the review conclusion tied to its exact head
    SHA. Fix actionable review findings; do not resolve threads without an actual disposition.
-5. Merge only when required checks and reviews pass, all review threads are resolved, and the reviewed head still
-   matches. Use `lgtm-ai gh pr merge <number>`; never bypass a failing check. Otherwise leave the PR open with a precise
-   blocker. Limit repair to two attempts per candidate per run, then report the unresolved blocker.
+5. Merge only into maintained `main`, when required checks and reviews pass, all review threads are resolved, and the
+   reviewed head still matches. Use `lgtm-ai gh pr merge <number>`; never bypass a failing check. Otherwise leave the PR
+   open with a precise blocker. Limit repair to two attempts per candidate per run, then report the unresolved blocker.
 6. Refresh the intake after merging. The reporter verifies GitHub's actual merged state and merge commit; it must not
    claim application from a checkbox, label, discovery cursor, or open PR.
 

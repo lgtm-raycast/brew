@@ -143,6 +143,8 @@ def implementation_status(client: GitHub, repository: str, decision: dict[str, A
         raise ValueError("Implementation receipt requires a positive PR number")
     pull = client.request(method="GET", path=f"/repos/{repository}/pulls/{number}")
     if pull.get("merged") is True:
+        if pull.get("base", {}).get("ref") != "main":
+            return f"{disposition}; #{number} merged outside main; not applied to main"
         return f"{disposition}; merged in #{number} ({pull['merge_commit_sha'][:7]})"
     return f"{disposition}; #{number} is not merged"
 

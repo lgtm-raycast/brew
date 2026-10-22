@@ -1,4 +1,11 @@
 {
   "schema": 1,
-  "commits": {}
+  "commits": {
+    "645cb29302e41f7730b0e68d84777feb0ad096a9": {
+      "disposition": "adopt",
+      "classification": "docs",
+      "reason": "Brew-only diff updates six published screenshots and their changelog entry; no commands, UI implementation, dependencies, or runtime behavior change.",
+      "pull_request": 5
+    }
+  }
 }

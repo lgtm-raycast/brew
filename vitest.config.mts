@@ -14,6 +14,16 @@ const extensionRoot = fileURLToPath(new URL(".", import.meta.url));
 process.env.RAYCAST_EXTENSION_ROOT = extensionRoot;
 
 export default defineConfig({
+  test: {
+    coverage: {
+      provider: "v8",
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: ["src/**/*.test.{ts,tsx}", "src/**/__mocks__/**", "src/**/*.check.ts"],
+      reporter: ["text", "json-summary", "json", "lcov", "html"],
+      // Honest whole-source import baseline; raise these as coverage improves.
+      thresholds: { statements: 26, branches: 23, functions: 24, lines: 25 },
+    },
+  },
   resolve: {
     alias: {
       "@raycast/api": fileURLToPath(new URL("./src/utils/__mocks__/raycast-api.ts", import.meta.url)),

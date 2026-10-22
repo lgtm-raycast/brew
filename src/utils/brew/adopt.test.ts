@@ -336,6 +336,7 @@ describe("preflight", () => {
 });
 
 describe("scanForAdoptableApps", () => {
+  // Use a nonexistent app directory so installed apps cannot affect fixtures.
   // Real records. `telegram-desktop` renames to `Telegram Desktop.app`, so the only
   // casks claiming `Telegram.app` are the native client and its beta — both of which
   // the installed Telegram Desktop contradicts.
@@ -368,7 +369,7 @@ describe("scanForAdoptableApps", () => {
     ignoredBundleIds: new Set<string>(),
     loadCasks,
     // Explicit, so the suite never depends on the runner's HOMEBREW_CASK_OPTS.
-    appdir: "/Applications",
+    appdir: "/nonexistent/lgtm-brew-test-apps",
   };
 
   it("offers nothing when every cask claiming the name contradicts the app", () => {
@@ -377,7 +378,13 @@ describe("scanForAdoptableApps", () => {
     return expect(
       scanForAdoptableApps({
         ...base,
-        apps: [{ name: "Telegram", path: "/Applications/Telegram.app", bundleId: "com.tdesktop.Telegram" }],
+        apps: [
+          {
+            name: "Telegram",
+            path: "/nonexistent/lgtm-brew-test-apps/Telegram.app",
+            bundleId: "com.tdesktop.Telegram",
+          },
+        ],
       }),
     ).resolves.toEqual([]);
   });
@@ -389,7 +396,7 @@ describe("scanForAdoptableApps", () => {
     // checks the match: that is Unlikely, not Likely.
     const found = await scanForAdoptableApps({
       ...base,
-      apps: [{ name: "Keka", path: "/Applications/Keka.app", bundleId: "com.aone.keka" }],
+      apps: [{ name: "Keka", path: "/nonexistent/lgtm-brew-test-apps/Keka.app", bundleId: "com.aone.keka" }],
     });
     expect(found).toHaveLength(1);
     expect(found[0].candidates.map((c) => c.token)).toEqual(["keka", "keka@beta"]);
@@ -402,7 +409,9 @@ describe("scanForAdoptableApps", () => {
     const found = await scanForAdoptableApps({
       ...base,
       installedCasks: new Set(["slack"]),
-      apps: [{ name: "Slack", path: "/Applications/Slack.app", bundleId: "com.tinyspeck.slackmacgap" }],
+      apps: [
+        { name: "Slack", path: "/nonexistent/lgtm-brew-test-apps/Slack.app", bundleId: "com.tinyspeck.slackmacgap" },
+      ],
     });
     expect(found).toEqual([]);
   });
@@ -413,7 +422,9 @@ describe("scanForAdoptableApps", () => {
     const found = await scanForAdoptableApps({
       ...base,
       ignoredBundleIds: new Set(["com.panic.Transmit"]),
-      apps: [{ name: "Transmit", path: "/Applications/Transmit.app", bundleId: "com.panic.Transmit" }],
+      apps: [
+        { name: "Transmit", path: "/nonexistent/lgtm-brew-test-apps/Transmit.app", bundleId: "com.panic.Transmit" },
+      ],
     });
     expect(found).toHaveLength(1);
     expect(found[0].ignored).toBe(true);
@@ -422,7 +433,9 @@ describe("scanForAdoptableApps", () => {
   it("does not mark an app the user has not ignored", async () => {
     const found = await scanForAdoptableApps({
       ...base,
-      apps: [{ name: "Transmit", path: "/Applications/Transmit.app", bundleId: "com.panic.Transmit" }],
+      apps: [
+        { name: "Transmit", path: "/nonexistent/lgtm-brew-test-apps/Transmit.app", bundleId: "com.panic.Transmit" },
+      ],
     });
     expect(found[0].ignored).toBe(false);
   });
@@ -430,7 +443,9 @@ describe("scanForAdoptableApps", () => {
   it("ignores an app no cask claims", async () => {
     const found = await scanForAdoptableApps({
       ...base,
-      apps: [{ name: "Nothing", path: "/Applications/Nothing.app", bundleId: "com.example.nothing" }],
+      apps: [
+        { name: "Nothing", path: "/nonexistent/lgtm-brew-test-apps/Nothing.app", bundleId: "com.example.nothing" },
+      ],
     });
     expect(found).toEqual([]);
   });
@@ -439,7 +454,9 @@ describe("scanForAdoptableApps", () => {
     const found = await scanForAdoptableApps({
       ...base,
       index: { ...index, phantom: { a: ["Transmit.app"] } },
-      apps: [{ name: "Transmit", path: "/Applications/Transmit.app", bundleId: "com.panic.Transmit" }],
+      apps: [
+        { name: "Transmit", path: "/nonexistent/lgtm-brew-test-apps/Transmit.app", bundleId: "com.panic.Transmit" },
+      ],
     });
     expect(found[0]?.candidates.map((c) => c.token)).toEqual(["transmit"]);
   });

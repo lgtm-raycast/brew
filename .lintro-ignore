@@ -1,0 +1,8 @@
+# Generated outputs and the separately versioned reusable-workflow checkout.
+.lgtm-ci-tooling/
+.lintro/
+.venv/
+node_modules/
+dist/
+coverage/
+raycast-env.d.ts

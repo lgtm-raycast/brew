@@ -15,3 +15,18 @@ compiled_raycast_rust
 .vscode
 .editorconfig
 WARP.md
+
+# Downstream tooling and generated outputs
+.venv/
+.lintro/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+__pycache__/
+.coverage
+coverage/
+dist/
+artifacts/
+report.xml
+coverage.xml
+.lgtm-ci-tooling/

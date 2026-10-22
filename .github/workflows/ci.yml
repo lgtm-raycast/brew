@@ -1,0 +1,78 @@
+---
+name: CI
+"on":
+  push:
+    branches: [main]
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  quality:
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-quality-lint.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
+    permissions:
+      contents: read
+      packages: read
+    with:
+      job-name: Lintro quality
+      egress-policy: block
+      egress-preset: quality
+  extension:
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-node.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
+    with:
+      node-version: "22"
+      package-manager: bun
+      pre-test-command: bash scripts/ci/raycast-check.sh
+      coverage: true
+      upload-coverage: true
+      publish-test-summary: true
+      job-name: Brew tests and Raycast build
+      egress-policy: block
+      egress-preset: quality
+  tracker:
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-python.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
+    with:
+      python-version: "3.14"
+      coverage: true
+      upload-coverage: false
+      publish-test-summary: true
+      job-name: Upstream tracker tests
+      egress-policy: block
+      egress-preset: pypi
+  title:
+    if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-semantic-pr-title.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
+    permissions:
+      contents: read
+      pull-requests: write
+  required:
+    name: Required CI
+    if: always()
+    needs: [quality, extension, tracker, title]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout gate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Require all validations
+        env:
+          QUALITY_RESULT: ${{ needs.quality.result }}
+          EXTENSION_RESULT: ${{ needs.extension.result }}
+          TRACKER_RESULT: ${{ needs.tracker.result }}
+          TITLE_RESULT: ${{ needs.title.result }}
+        run: bash scripts/ci/required.sh

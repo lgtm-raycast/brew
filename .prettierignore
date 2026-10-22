@@ -1,0 +1,5 @@
+.lintro/
+.venv/
+coverage/
+dist/
+raycast-env.d.ts

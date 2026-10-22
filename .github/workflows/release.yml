@@ -1,0 +1,39 @@
+---
+name: Release local source bundle
+"on":
+  push:
+    tags: ["v*"]
+permissions: {}
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  validate:
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-node.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
+    with:
+      node-version: "22"
+      package-manager: bun
+      pre-test-command: bash scripts/ci/release-check.sh
+      publish-test-summary: false
+      upload-build-artifact: true
+      build-artifact-path: artifacts
+      artifact-prefix: release
+      job-name: Validate release
+      egress-policy: block
+      egress-preset: quality
+  publish:
+    needs: validate
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-github-release.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
+    permissions:
+      actions: read
+      contents: write
+    with:
+      artifact-name: release-build-22
+      artifact-path: artifacts
+      files: artifacts/*.tar.gz
+      checksums: true
+      immutable-assets: true

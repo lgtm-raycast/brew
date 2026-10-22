@@ -154,15 +154,13 @@ function statisticsRows(options: MetadataOptions, tap: string | null | undefined
   if (rows.length === 0) return [];
   return [
     { kind: "separator", key: "stats-sep" },
-    ...rows.map(
-      (row): MetadataRow => ({
-        kind: "label",
-        key: `stat-${row.key}`,
-        title: row.title,
-        text: row.text,
-        icon: row.unavailable ? { source: Icon.QuestionMarkCircle, tintColor: STATUS_COLOR.muted } : undefined,
-      }),
-    ),
+    ...rows.map((row): MetadataRow => ({
+      kind: "label",
+      key: `stat-${row.key}`,
+      title: row.title,
+      text: row.text,
+      icon: row.unavailable ? { source: Icon.QuestionMarkCircle, tintColor: STATUS_COLOR.muted } : undefined,
+    })),
   ];
 }
 

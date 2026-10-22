@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "repository": "raycast/extensions",
+  "ref": "main",
+  "path": "extensions/brew",
+  "baseline": "97f2b1aadec7437d898fe4948245a8b924883995",
+  "requested_snapshot": "645cb29302e41f7730b0e68d84777feb0ad096a9",
+  "intake_label": "upstream",
+  "approval_label": "upstream:approved",
+  "owner": "TurboCoder13"
+}

@@ -3,3 +3,4 @@
 coverage/
 dist/
 raycast-env.d.ts
+.lgtm-ci-tooling/

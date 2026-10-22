@@ -1,5 +1,6 @@
 ---
 ignores:
+  - "**/.lgtm-ci-tooling/**"
   - "**/.lintro/**"
   - "**/node_modules/**"
   - "**/.venv/**"

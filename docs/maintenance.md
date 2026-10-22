@@ -108,3 +108,17 @@ Security scanning required bounded updates to stream-json 3.7.0, Vitest and its 
 and source-map-js 1.2.2. Prettier was updated to the supported 3.9 series so lintro actually runs it. Other resolved
 upstream dependencies were retained. The adopt test fixtures use a nonexistent app directory so installed Mac apps
 cannot change their outcome.
+
+## Raycast CI compatibility
+
+Raycast's CLI checks for `package-lock.json` only when `CI=true`; that check assumes the Store's npm packaging workflow.
+This local-use edition installs from `bun.lock` with Bun's frozen-lockfile gate in lgtm-ci. The Raycast lint invocation
+sets `CI=false` to omit only that incompatible npm-lock check. Manifest schema, upstream author/contributor, icon,
+metadata, ESLint, and Prettier validation remain active. The egress policy explicitly permits `www.raycast.com:443` for
+Raycast's schema and author-validation requests. No relaxed lint mode, fabricated npm lock, or parallel lock authority
+is used.
+
+The `.lgtm-ci-tooling/` directory is lgtm-ci's separately versioned workflow checkout, created only during CI. It is
+excluded from this extension's lint and dependency discovery using `.lintro-ignore`; it is maintained and checked in its
+own repository. Generated reports, dependencies, and build output are also excluded. Production extension code and both
+committed lockfiles remain in scope.

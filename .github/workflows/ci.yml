@@ -29,6 +29,8 @@ jobs:
     with:
       node-version: "22"
       package-manager: bun
+      allowed-endpoints-mode: append
+      allowed-endpoints: www.raycast.com:443
       pre-test-command: bash scripts/ci/raycast-check.sh
       coverage: true
       upload-coverage: true

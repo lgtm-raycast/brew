@@ -29,3 +29,4 @@ dist/
 artifacts/
 report.xml
 coverage.xml
+.lgtm-ci-tooling/

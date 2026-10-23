@@ -158,6 +158,13 @@ section with `- Closes #N`. Partial work uses `- Relates to #N`. The durable int
 must not close that issue. CODEOWNERS identifies the owner without introducing mandatory human approval for autonomous
 light maintenance. Label/assignment workflows execute only the pinned shared metadata implementations.
 
+The `Issue metadata` workflow calls the shared LGTM Raycast action at its immutable release commit. It synchronizes the
+organization label catalog without removing custom labels, adds `TurboCoder13` without replacing other assignees, and
+adds `needs-triage` only to otherwise unlabeled issues. Issue events use current API state; daily/manual catch-up also
+covers closed and bot-created issues. The action uses only the caller repository token with `contents: read` and
+`issues: write`. Deterministic issue producers still set their own metadata because `GITHUB_TOKEN` events may not
+trigger another workflow.
+
 Main push runs are not automatically cancelled by later commits. Verify the resulting main CI after a merge before
 calling maintenance complete. If a runner cancellation or infrastructure failure leaves main red, rerun the failed
 workflow and inspect the resulting gate; never weaken the ruleset or mark a cancelled check successful. Tagged releases

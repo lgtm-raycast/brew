@@ -29,6 +29,7 @@ jobs:
       pull-requests: write
     with:
       node-version: "22"
+      draft-pr-skip: false
       package-manager: bun
       allowed-endpoints-mode: append
       allowed-endpoints: www.raycast.com:443
@@ -50,6 +51,7 @@ jobs:
       pull-requests: write
     with:
       python-version: "3.14"
+      draft-pr-skip: false
       coverage: true
       coverage-threshold: 90
       upload-coverage: false

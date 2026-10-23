@@ -1,0 +1,25 @@
+---
+name: Issue metadata
+"on":
+  issues:
+    types: [opened, reopened, unassigned, unlabeled]
+  schedule:
+    - cron: "47 3 * * *"
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: issue-metadata
+  cancel-in-progress: false
+jobs:
+  metadata:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Reconcile issue metadata
+        uses: lgtm-raycast/.github/actions/issue-metadata@a95cd6cb90832f34394935cf1d33415b9a6c1fe2 # v0.1.0
+        with:
+          issue-number: ${{ github.event.issue.number || '0' }}
+          reconcile-all: ${{ github.event_name != 'issues' }}

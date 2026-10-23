@@ -7,11 +7,13 @@ dependencies = []
 [dependency-groups]
 dev = [
   "assertpy>=1.1",
-  "lintro==0.171.3",
+  "lintro==0.173.1",
   "pytest>=9.0.3",
   "pytest-cov>=7.0.0",
   "pytest-xdist>=3.8.0",
   "pytest-timeout>=2.4.0",
+  "pylint>=4.0.8",
+  "import-linter>=2.11",
 ]
 
 [tool.pytest.ini_options]
@@ -36,3 +38,11 @@ line-length = 120
 
 [tool.pydoclint]
 allow-init-docstring = true
+
+[tool.lintro.oxfmt]
+# Use the Raycast-compatible Prettier settings as the single formatting source.
+config = ".prettierrc"
+
+[tool.pylint.format]
+# Pylint native setting matches lintro enforce.line_length.
+max-line-length = 120

@@ -448,7 +448,7 @@ async function installFromTap(target: TapTarget & { package: string }, name: str
   return install(item);
 }
 
-/// Utilties
+/// Utilities
 
 async function install(formula: Cask | Formula): Promise<boolean> {
   if (!(await ensureTrusted(formula))) return false;

@@ -74,6 +74,8 @@ const caskRemote: ChunkedRemote<Cask> = {
         if (entry) adopt[cask.token] = entry;
       },
       compact: compactCaskArtifacts,
+      // Partial directory is created by the cache builder; sidecar filename is a fixed constant.
+      // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
       writeSidecar: (partialDir) => fs.writeFile(path.join(partialDir, ADOPT_INDEX_FILE), JSON.stringify(adopt)),
     };
   },

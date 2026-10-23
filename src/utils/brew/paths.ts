@@ -30,6 +30,8 @@ export const brewPrefix = (() => {
 /**
  * Get a path relative to the brew prefix.
  */
+// Suffix is a local Homebrew subpath; callers operate on the selected installation.
+// nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
 export const brewPath = (suffix: string): string => path_join(brewPrefix, suffix);
 
 /**

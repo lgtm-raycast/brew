@@ -123,10 +123,19 @@ excluded from this extension's lint and dependency discovery using `.lintro-igno
 own repository. Generated reports, dependencies, and build output are also excluded. Production extension code and both
 committed lockfiles remain in scope.
 
+Every lintro tool is considered (`execution.enabled_tools: []`). Tools without applicable files or required native
+configuration may skip. CI callers select Ubuntu 26.04; forwarding that selection into nested test report publishers and
+Sol-6.1 subscription review support are tracked in [lgtm-ci #1204](https://github.com/lgtm-hq/lgtm-ci/pull/1204).
+
 ## Bootstrap CI and PR contract
 
 The repository uses SHA-pinned lgtm-ci for lintro quality, structured quality comments, extension and tracker test
-reports, security scanning and its PR summary, action-pinning validation, semantic titles, PR labels and assignment.
+reports, security scanning and its PR summary, action-pinning validation, semantic titles, PR labels and assignment. The
+committed `raycast-env.d.ts` is generated from `package.json` by `bun run build`; do not edit it by hand. Its global
+`Preferences` and `Arguments` definitions type-check manifest-derived settings and command inputs. Committing this
+generated artifact is our CI design choice, rather than a Raycast requirement to track generated output. It lets
+independent quality jobs type-check a fresh checkout, and the extension CI build rejects stale generated declarations.
+
 Raycast lint/build run after lintro; they validate extension manifests, metadata and the native build. They supplement
 lintro rather than replacing it. JSON and text lintro reports are uploaded by the quality workflow and the shared
 quality-summary publisher posts the standard sticky PR comment.

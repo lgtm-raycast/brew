@@ -297,7 +297,7 @@
 
 ## [Bug Fix] - 2025-11-03
 
-- Fixed an issue where the the terminal command may be mis-typed in the Raycast window
+- Fixed an issue where the terminal command may be mistyped in the Raycast window
 
 ## [Improvements] - 2025-02-17
 

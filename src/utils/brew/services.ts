@@ -15,8 +15,8 @@ import { execBrew } from "./commands";
  * Known values include "started", "stopped", "none", "error", "scheduled",
  * "other" and "unknown", but brew may report others so this stays a string.
  */
-export type ServiceStatus =
-  "started" | "stopped" | "none" | "error" | "scheduled" | "other" | "unknown" | (string & {});
+type KnownServiceStatus = "started" | "stopped" | "none" | "error" | "scheduled" | "other" | "unknown";
+export type ServiceStatus = KnownServiceStatus | (string & {});
 
 /**
  * A brew service, as returned by `brew services list --json`.

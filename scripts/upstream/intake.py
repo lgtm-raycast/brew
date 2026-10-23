@@ -139,7 +139,7 @@ def implementation_status(client: GitHub, repository: str, decision: dict[str, A
     number = decision.get("pull_request")
     if number is None:
         return f"{disposition}; no implementation recorded"
-    if type(number) is not int or number < 1:
+    if not isinstance(number, int) or isinstance(number, bool) or number < 1:
         raise ValueError("Implementation receipt requires a positive PR number")
     pull = client.request(method="GET", path=f"/repos/{repository}/pulls/{number}")
     if pull.get("merged") is True:

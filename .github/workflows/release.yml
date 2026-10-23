@@ -23,6 +23,7 @@ jobs:
       contents: read
       pull-requests: write
     with:
+      runner-image: ubuntu-26.04
       node-version: "22"
       package-manager: bun
       allowed-endpoints-mode: append
@@ -42,6 +43,7 @@ jobs:
       actions: read
       contents: write
     with:
+      runner-image: ubuntu-26.04
       artifact-name: release-build-22
       artifact-path: artifacts
       files: artifacts/*.tar.gz

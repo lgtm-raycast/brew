@@ -282,7 +282,7 @@ The order in `adoptClassification` is load-bearing, and three real cases fix it:
   state there (it updated itself), and Homebrew skips its comparison anyway. Checking the gap first would file
   Fantastical 4.2.1, against a 4.2 cask with a matching id, under Unlikely.
 - **An unorderable version never promotes a candidate that nothing checks.** It is missing evidence, not agreement.
-  Otherwise Atlas, an unrelated app, moves from Unlikely to Likely the moment its version is the unparseable `1.6.13b`.
+  Otherwise Atlas, an unrelated app, moves from Unlikely to Likely the moment its version is the unparsable `1.6.13b`.
   The cost is that Antinote and Keka, genuine matches that publish no readable version, sit in Unlikely with it —
   nothing distinguishes them from Atlas.
 

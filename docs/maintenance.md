@@ -84,8 +84,8 @@ uv run lintro fmt
 uv run lintro chk
 uv run lintro tst
 bun run test:coverage
-npm run lint
-npm run build
+bun run lint
+bun run build
 ```
 
 A local preview of the report is read-only:

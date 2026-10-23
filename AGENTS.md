@@ -3,8 +3,9 @@
 ## House standards
 
 Use Bun with the committed `bun.lock`; Python tooling uses uv. Run `uv run lintro fmt`, `uv run lintro chk`,
-`uv run lintro tst`, `bun run test:coverage`, then `npm run lint` and `npm run build`. Raycast owns extension-specific
-rules. CI uses SHA-pinned `lgtm-hq/lgtm-ci`.
+`uv run lintro tst`, `bun run test:coverage`, then `bun run lint` and `bun run build`. Raycast owns extension-specific
+rules. CI uses SHA-pinned `lgtm-hq/lgtm-ci`. Run scripts with Bun; do not force the Raycast CLI onto Bun with `--bun`.
+Store-specific npm guidance in generic skills does not apply to this local-use fork.
 
 Apply the shared `stand-general`, `stand-ts`, `stand-py`, `stand-ci`, `lint`, and `raycast` skills when available.
 TypeScript is strict. Raycast command modules and configuration files retain framework-required default exports. React's

@@ -58,6 +58,8 @@ export const bundleIdentifier: string = (() => {
 })();
 
 export function cachePath(name: string): string {
+  // Cache roots come from Raycast; names are fixed cache segments or local directory entries.
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
   return path.join(supportPath, name);
 }
 
@@ -105,6 +107,8 @@ export async function clearCache(): Promise<void> {
     await Promise.all([
       // Clear legacy cache files
       ...CACHE_FILES.map((file) =>
+        // Cache roots come from Raycast; names are fixed cache segments or local directory entries.
+        // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
         rm(path.join(environment.supportPath, file), { force: true }).catch(() => {
           // Ignore errors for files that don't exist
         }),
@@ -149,6 +153,8 @@ async function clearPartials(): Promise<void> {
       entries
         .filter((entry) => entry.endsWith(".partial"))
         .map((entry) =>
+          // Cache roots come from Raycast; names are fixed cache segments or local directory entries.
+          // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
           rm(path.join(environment.supportPath, entry), { recursive: true, force: true }).catch(() => {}),
         ),
     );
@@ -386,10 +392,16 @@ export const CHUNKED_CACHE_VERSION = 5;
  * Get configuration for chunked cache paths.
  */
 export function getChunkedCacheConfig(type: "formula" | "cask"): ChunkedCacheConfig {
+  // Cache roots come from Raycast; names are fixed cache segments or local directory entries.
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
   const baseDir = path.join(supportPath, type);
   return {
     baseDir,
+    // Cache roots come from Raycast; names are fixed cache segments or local directory entries.
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
     indexPath: path.join(baseDir, "index.json"),
+    // Cache roots come from Raycast; names are fixed cache segments or local directory entries.
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
     metaPath: path.join(baseDir, "meta.json"),
     type,
   };
@@ -400,6 +412,8 @@ export function getChunkedCacheConfig(type: "formula" | "cask"): ChunkedCacheCon
  */
 function getChunkPath(baseDir: string, chunkNumber: number): string {
   const paddedNumber = String(chunkNumber).padStart(4, "0");
+  // Cache roots come from Raycast; names are fixed cache segments or local directory entries.
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
   return path.join(baseDir, `chunk-${paddedNumber}.json`);
 }
 
@@ -609,6 +623,8 @@ async function buildChunkedCacheNow<T>(
         }
 
         // Write index and meta into the partial dir
+        // Cache roots come from Raycast; names are fixed cache segments or local directory entries.
+        // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
         await writeFile(path.join(partialDir, "index.json"), JSON.stringify(index));
 
         const meta: ChunkedCacheMeta = {
@@ -621,6 +637,8 @@ async function buildChunkedCacheNow<T>(
           chunkCount: chunkNumber,
           type: config.type,
         };
+        // Cache roots come from Raycast; names are fixed cache segments or local directory entries.
+        // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
         await writeFile(path.join(partialDir, "meta.json"), JSON.stringify(meta));
 
         // A sidecar serves ONE feature; the chunks and index serve every

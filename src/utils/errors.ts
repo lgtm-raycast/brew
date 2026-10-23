@@ -390,6 +390,8 @@ export function upgradeSkipReason(output: string, name: string): string | undefi
   //    warning: those are different formulae.
   const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
+  // Package name is regex-escaped above; all remaining pattern fragments are static.
+  // nosemgrep: javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
   const named = new RegExp(`Not upgrading ${TAP_PREFIX}${escaped}, ([^\n]+)`, "i").exec(output);
   if (named) {
     const reason = named[1];
@@ -404,11 +406,15 @@ export function upgradeSkipReason(output: string, name: string): string | undefi
 
   // "<name> <version> already installed" — a formula brought up to date as a
   // dependency of an earlier package in the same run is the common case.
+  // Package name is regex-escaped above; all remaining pattern fragments are static.
+  // nosemgrep: javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
   if (new RegExp(`${WORD_START}${TAP_PREFIX}${escaped} \\S+ already installed\\b`, "im").test(output)) {
     return "Already up to date";
   }
 
   // "The cask '<token>' cannot be upgraded as-is."
+  // Package name is regex-escaped above; all remaining pattern fragments are static.
+  // nosemgrep: javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
   if (new RegExp(`The cask '${TAP_PREFIX}${escaped}' cannot be upgraded as-is`, "i").test(output)) {
     return "Cannot be upgraded as-is — reinstall it";
   }

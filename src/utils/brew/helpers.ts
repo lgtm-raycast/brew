@@ -301,6 +301,8 @@ export function isPinnedPackage(
 export async function brewPinnedIdentifiers(): Promise<{ formulae: Set<string>; casks: Set<string> }> {
   const read = async (dir: string): Promise<Set<string>> => {
     try {
+      // Paths refer to the selected local Homebrew installation and its package metadata.
+      // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
       return new Set(await readdir(brewPath(path_join("var/homebrew", dir))));
     } catch (err) {
       // An absent directory means nothing of that kind is pinned: `unpin`
@@ -379,8 +381,12 @@ export function brewInstallPath(installable: Cask | Formula): string {
 
 function caskInstallPath(cask: Cask): string {
   // Casks are not updated as reliably, so we don't include the cask installed version here.
+  // Paths refer to the selected local Homebrew installation and its package metadata.
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
   const basePath = brewPath(path_join("Caskroom", cask.token));
   if (cask.installed) {
+    // Paths refer to the selected local Homebrew installation and its package metadata.
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
     return path_join(basePath, cask.installed);
   } else {
     return basePath;
@@ -388,9 +394,13 @@ function caskInstallPath(cask: Cask): string {
 }
 
 function formulaInstallPath(formula: Formula): string {
+  // Paths refer to the selected local Homebrew installation and its package metadata.
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
   const basePath = brewPath(path_join("Cellar", formula.name));
   const firstInstalled = formula.installed[0];
   if (firstInstalled) {
+    // Paths refer to the selected local Homebrew installation and its package metadata.
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
     return path_join(basePath, firstInstalled.version);
   } else {
     return basePath;

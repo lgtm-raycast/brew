@@ -61,7 +61,7 @@ export function stripRevision(version: string): string {
  * shapes by splitting into digit and letter runs, and got them wrong in ways
  * that are hard to see and easy to ship: it ranked `1.0b2` above `1.0` because
  * the beta had more segments, ordered `1.0-p1` below `1.0-rc1` because "p"
- * sorts before "rc", and mis-ranked case variants. Homebrew implements real
+ * sorts before "rc", and incorrectly ranked case variants. Homebrew implements real
  * version semantics in Ruby; this module does not, so it declines the cases it
  * cannot do correctly and leaves them to brew's own `outdated` flag.
  */

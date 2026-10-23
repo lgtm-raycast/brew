@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import sys
+from io import BytesIO
 from pathlib import Path
 from typing import Any
 
@@ -10,7 +12,7 @@ import pytest
 from assertpy import assert_that
 from pytest import MonkeyPatch
 
-from scripts.upstream import intake
+from scripts.upstream import github, intake
 from scripts.upstream.github import GitHub, GitHubError
 
 BASE = "1" * 40
@@ -18,7 +20,7 @@ NEXT = "2" * 40
 TIP = "3" * 40
 
 
-class QueueGitHub(GitHub):
+class QueueGitHub(GitHub):  # pylint: disable=too-few-public-methods  # Implements the single exchange contract.
     """Return queued API fixtures while recording the exact request contract."""
 
     def __init__(self, responses: list[Any]) -> None:
@@ -46,8 +48,8 @@ class QueueGitHub(GitHub):
         return self.responses.pop(0)
 
 
-@pytest.fixture
-def config() -> dict[str, Any]:
+@pytest.fixture(name="config")
+def source_config() -> dict[str, Any]:
     """Provide a minimal versioned upstream source and intake configuration."""
     return {
         "repository": "raycast/extensions",
@@ -191,8 +193,8 @@ def test_report_size_limit_refuses_to_drop_state(config: dict[str, Any], monkeyp
         )
 
 
-@pytest.fixture
-def repository_root(tmp_path: Path, config: dict[str, Any]) -> Path:
+@pytest.fixture(name="repository_root")
+def source_repository_root(tmp_path: Path, config: dict[str, Any]) -> Path:
     """Write independent source config and adoption decisions for end-to-end runs."""
     (tmp_path / ".upstream").mkdir()
     (tmp_path / ".upstream/config.json").write_text(json.dumps(config))
@@ -257,14 +259,11 @@ def test_wrong_destination_is_rejected_before_api_calls(repository_root: Path) -
 
 def test_github_client_keeps_auth_on_downstream_requests(monkeypatch: MonkeyPatch) -> None:
     """Public reads omit auth; downstream reporting uses an explicit credential."""
-    from io import BytesIO
-
-    from scripts.upstream import github
-
     calls: list[Any] = []
 
     def response(request: Any, timeout: int) -> BytesIO:
         """Record protocol fields and return an in-memory JSON response."""
+        assert_that(timeout).is_equal_to(30)
         calls.append(request)
         return BytesIO(b'{"ok":true}')
 
@@ -288,7 +287,6 @@ def test_github_client_rejects_external_hosts(path: str) -> None:
 
 def test_github_client_wraps_network_failures(monkeypatch: MonkeyPatch) -> None:
     """Surface a credential-free error without retrying against another identity."""
-    from scripts.upstream import github
 
     def fail(*args: Any, **kwargs: Any) -> Any:
         """Simulate a failed fixed-host network request."""
@@ -301,8 +299,6 @@ def test_github_client_wraps_network_failures(monkeypatch: MonkeyPatch) -> None:
 
 def test_cli_requires_scoped_token_and_prints_only_dry_run(monkeypatch: MonkeyPatch, capsys: Any) -> None:
     """Require explicit reporting auth and expose report text only for previews."""
-    import sys
-
     monkeypatch.setattr(sys, "argv", ["intake", "--dry-run"])
     monkeypatch.delenv("GH_TOKEN", raising=False)
     monkeypatch.delenv("GITHUB_TOKEN", raising=False)

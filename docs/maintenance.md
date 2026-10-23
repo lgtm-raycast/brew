@@ -123,6 +123,10 @@ excluded from this extension's lint and dependency discovery using `.lintro-igno
 own repository. Generated reports, dependencies, and build output are also excluded. Production extension code and both
 committed lockfiles remain in scope.
 
+Every lintro tool is considered (`execution.enabled_tools: []`). Tools without applicable files or required native
+configuration may skip. CI callers select Ubuntu 26.04; forwarding that selection into nested test report publishers and
+Sol-6.1 subscription review support are tracked in [lgtm-ci #1204](https://github.com/lgtm-hq/lgtm-ci/pull/1204).
+
 ## Bootstrap CI and PR contract
 
 The repository uses SHA-pinned lgtm-ci for lintro quality, structured quality comments, extension and tracker test

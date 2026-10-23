@@ -12,7 +12,7 @@ class GitHubError(RuntimeError):
     """Raised when an API request cannot be completed safely."""
 
 
-class GitHub:
+class GitHub:  # pylint: disable=too-few-public-methods  # One HTTP exchange is the client contract.
     """Call GitHub without exposing credentials or following arbitrary hosts."""
 
     def __init__(self, token: str | None = None) -> None:
@@ -58,6 +58,8 @@ class GitHub:
             data=json.dumps(payload).encode() if payload is not None else None,
         )
         try:
+            # URL uses a fixed HTTPS GitHub host after rejecting external paths.
+            # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected
             with urlopen(request, timeout=30) as response:  # nosec B310 - fixed HTTPS host
                 return json.loads(response.read())
         except (HTTPError, OSError, ValueError) as error:

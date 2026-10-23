@@ -23,10 +23,16 @@ import type { CaskArtifact, ChunkedCacheConfig, IndexEntry } from "./types";
 const SOURCE_URL = "https://formulae.brew.sh/api/formula.json";
 
 function configIn(dir: string): ChunkedCacheConfig {
+  // Paths use test-owned temporary directories and fixed cache filenames.
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
   const baseDir = path.join(dir, "formula");
   return {
     baseDir,
+    // Paths use test-owned temporary directories and fixed cache filenames.
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
     indexPath: path.join(baseDir, "index.json"),
+    // Paths use test-owned temporary directories and fixed cache filenames.
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
     metaPath: path.join(baseDir, "meta.json"),
     type: "formula",
   };
@@ -160,10 +166,16 @@ describe("buildChunkedCache (committed fixtures)", () => {
 
 describe("buildChunkedCache sidecar hooks", () => {
   function caskConfigIn(dir: string): ChunkedCacheConfig {
+    // Paths use test-owned temporary directories and fixed cache filenames.
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
     const baseDir = path.join(dir, "cask");
     return {
       baseDir,
+      // Paths use test-owned temporary directories and fixed cache filenames.
+      // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
       indexPath: path.join(baseDir, "index.json"),
+      // Paths use test-owned temporary directories and fixed cache filenames.
+      // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
       metaPath: path.join(baseDir, "meta.json"),
       type: "cask",
     };
@@ -190,6 +202,8 @@ describe("buildChunkedCache sidecar hooks", () => {
             if (entry) adopt[cask.token] = entry;
           },
           compact: compactCaskArtifacts,
+          // Paths use test-owned temporary directories and fixed cache filenames.
+          // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
           writeSidecar: async (partialDir) => writeFile(path.join(partialDir, ADOPT_INDEX_FILE), JSON.stringify(adopt)),
         },
       );

@@ -17,3 +17,5 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+    with:
+      runner-image: ubuntu-26.04

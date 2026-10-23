@@ -33,13 +33,13 @@ uv run lintro fmt
 uv run lintro chk
 uv run lintro tst
 bun run test:coverage
-npm run lint
-npm run build
+bun run lint
+bun run build
 ```
 
-Bun is the dependency/lockfile authority. The npm commands invoke Raycast's required scripts using those installed
-dependencies; they do not create a second dependency lockfile. Strict TypeScript, Raycast validation, Python tracker
-tests, and coverage run in CI through pinned lgtm-ci workflows.
+Bun manages dependencies and runs all project scripts using the committed `bun.lock`. Raycast's CLI retains its Node
+runtime; `bun run` launches the existing scripts without forcing a runtime replacement or creating another lockfile.
+Strict TypeScript, Raycast validation, Python tracker tests, and coverage run in CI through pinned lgtm-ci workflows.
 
 Version tags matching `package.json` run the release validation and publish a source bundle with checksums through
 lgtm-ci. The release does not publish to npm or Raycast Store and does not install anything on a Mac.

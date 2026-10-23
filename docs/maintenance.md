@@ -84,8 +84,8 @@ uv run lintro fmt
 uv run lintro chk
 uv run lintro tst
 bun run test:coverage
-npm run lint
-npm run build
+bun run lint
+bun run build
 ```
 
 A local preview of the report is read-only:
@@ -131,7 +131,9 @@ Sol-6.1 subscription review support are tracked in [lgtm-ci #1204](https://githu
 
 The repository uses SHA-pinned lgtm-ci for lintro quality, structured quality comments, extension and tracker test
 reports, security scanning and its PR summary, action-pinning validation, semantic titles, PR labels and assignment. The
-committed `raycast-env.d.ts` is generated from `package.json` by `npm run build`; do not edit it by hand. It lets
+committed `raycast-env.d.ts` is generated from `package.json` by `bun run build`; do not edit it by hand. Its global
+`Preferences` and `Arguments` definitions type-check manifest-derived settings and command inputs. Committing this
+generated artifact is our CI design choice, rather than a Raycast requirement to track generated output. It lets
 independent quality jobs type-check a fresh checkout, and the extension CI build rejects stale generated declarations.
 
 Raycast lint/build run after lintro; they validate extension manifests, metadata and the native build. They supplement

@@ -122,3 +122,35 @@ The `.lgtm-ci-tooling/` directory is lgtm-ci's separately versioned workflow che
 excluded from this extension's lint and dependency discovery using `.lintro-ignore`; it is maintained and checked in its
 own repository. Generated reports, dependencies, and build output are also excluded. Production extension code and both
 committed lockfiles remain in scope.
+
+## Bootstrap CI and PR contract
+
+The repository uses SHA-pinned lgtm-ci for lintro quality, structured quality comments, extension and tracker test
+reports, security scanning and its PR summary, action-pinning validation, semantic titles, PR labels and assignment.
+Raycast lint/build run after lintro; they validate extension manifests, metadata and the native build. They supplement
+lintro rather than replacing it. JSON and text lintro reports are uploaded by the quality workflow and the shared
+quality-summary publisher posts the standard sticky PR comment.
+
+Lintro AI review runs on non-draft same-repository PRs using the pinned shared workflow and the existing Anthropic
+subscription OAuth token. It receives no API keys and has no API fallback. The private Raycast App posts reviews.
+`ai.providers.anthropic.cli_bare: never` retains OAuth authentication; ordinary local lintro commands keep AI disabled.
+Review failure, missing credentials, incomplete review, or allowance exhaustion blocks merging and needs investigation.
+Secrets are provisioned privately with an explicitly secrets-scoped token through the same lgtm-ai App routing; routine
+repository tokens retain their smaller permission profile. No secret belongs in a workflow or issue.
+
+The main ruleset requires both `Required CI` and `gate / ✅ All Checks Passed`, sourced from GitHub Actions. The first
+checks quality, tests/build, tracker, security, pinning and applicable title/report jobs. The shared all-checks gate
+covers every other workflow, check and status on the PR head, including AI review. Both requirements preserve strict
+up-to-date branches, signed commits, linear history, squash-only PRs, resolved review threads and no bypass actors.
+Check these actual settings before autonomous merges; a green subset does not authorize a merge.
+
+Use `.github/PULL_REQUEST_TEMPLATE.md`, adapted from the HQ organization template. Fully resolving PRs use a `Closes`
+section with `- Closes #N`. Partial work uses `- Relates to #N`. The durable intake remains open; adopting a candidate
+must not close that issue. CODEOWNERS identifies the owner without introducing mandatory human approval for autonomous
+light maintenance. Label/assignment workflows execute only the pinned shared metadata implementations.
+
+Main push runs are not automatically cancelled by later commits. Verify the resulting main CI after a merge before
+calling maintenance complete. If a runner cancellation or infrastructure failure leaves main red, rerun the failed
+workflow and inspect the resulting gate; never weaken the ruleset or mark a cancelled check successful. Tagged releases
+reuse the full CI workflow before source packaging and publication. Wait for main verification before creating a tag. A
+release build alone is not evidence that every main workflow passed.

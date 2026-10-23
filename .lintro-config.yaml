@@ -43,3 +43,11 @@ defaults:
         allow-non-breakable-inline-mappings: true
       comments:
         min-spaces-from-content: 1
+# Local linting stays deterministic; the review workflow explicitly enables AI.
+ai:
+  enabled: false
+  provider: anthropic
+  transport: cli
+  providers:
+    anthropic:
+      cli_bare: never

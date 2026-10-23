@@ -6,10 +6,11 @@ name: CI
   pull_request:
   merge_group:
   workflow_dispatch:
+  workflow_call:
 permissions: {}
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   quality:
     uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-quality-lint.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
@@ -33,6 +34,7 @@ jobs:
       allowed-endpoints: www.raycast.com:443
       pre-test-command: bash scripts/ci/raycast-check.sh
       coverage: true
+      coverage-threshold: 25
       upload-coverage: true
       publish-test-summary: true
       job-name: Brew tests and Raycast build
@@ -47,11 +49,44 @@ jobs:
     with:
       python-version: "3.14"
       coverage: true
+      coverage-threshold: 90
       upload-coverage: false
       publish-test-summary: true
       job-name: Upstream tracker tests
       egress-policy: block
       egress-preset: pypi
+  publish-quality-summary:
+    needs: quality
+    if: >-
+      !cancelled() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name ==
+      github.repository
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-publish-quality-summary.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
+    permissions:
+      contents: read
+      pull-requests: write
+    with:
+      exit-code: ${{ needs.quality.outputs.exit-code }}
+  security:
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-security-audit.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
+    permissions:
+      contents: read
+      packages: read
+    with:
+      job-name: Security audit
+  publish-security-summary:
+    needs: security
+    if: >-
+      !cancelled() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name ==
+      github.repository
+    # lgtm-ci v0.78.0
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-publish-security-audit-comment.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb
+    permissions:
+      contents: read
+      pull-requests: write
+  pinning:
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-validate-action-pinning.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
+    permissions:
+      contents: read
   title:
     if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
     uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-semantic-pr-title.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
@@ -61,7 +96,7 @@ jobs:
   required:
     name: Required CI
     if: always()
-    needs: [quality, extension, tracker, title]
+    needs: [quality, extension, tracker, security, pinning, title, publish-quality-summary, publish-security-summary]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
@@ -76,5 +111,9 @@ jobs:
           QUALITY_RESULT: ${{ needs.quality.result }}
           EXTENSION_RESULT: ${{ needs.extension.result }}
           TRACKER_RESULT: ${{ needs.tracker.result }}
+          SECURITY_RESULT: ${{ needs.security.result }}
+          PINNING_RESULT: ${{ needs.pinning.result }}
+          QUALITY_SUMMARY_RESULT: ${{ needs.publish-quality-summary.result }}
+          SECURITY_SUMMARY_RESULT: ${{ needs.publish-security-summary.result }}
           TITLE_RESULT: ${{ needs.title.result }}
         run: bash scripts/ci/required.sh

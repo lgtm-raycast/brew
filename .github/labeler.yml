@@ -1,0 +1,16 @@
+---
+ci:
+  - changed-files:
+      - any-glob-to-any-file: [".github/**", "scripts/ci/**"]
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: ["**/*.md", "metadata/**"]
+testing:
+  - changed-files:
+      - any-glob-to-any-file: ["tests/**", "src/**/*.test.ts", "vitest.config.ts"]
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file: ["package.json", "bun.lock", "pyproject.toml", "uv.lock"]
+upstream:
+  - changed-files:
+      - any-glob-to-any-file: [".upstream/**", "scripts/upstream/**", "maintenance/**"]

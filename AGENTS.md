@@ -23,9 +23,11 @@ for agent commits, pushes, and GitHub writes. Run `lgtm-ai doctor --quiet` befor
 fall back to personal credentials. Preserve the configured human committer and signature. Deterministic Actions
 workflows use their repository-scoped `GITHUB_TOKEN`.
 
-Use signed semantic commits and squash PR merges. Required checks must pass, required reviews must be satisfied, and
-review threads must be resolved. Review the final diff and record the exact reviewed head before autonomous merging. Do
-not weaken branch protection or use an administrative merge to evade it.
+Use signed semantic commits and squash PR merges. Both `Required CI` and `gate / ✅ All Checks Passed` must pass, every
+other check must be green, required reviews must be satisfied, and review threads must be resolved. Review the final
+diff and record the exact reviewed head before autonomous merging. Do not weaken branch protection or use an
+administrative merge to evade it. Verify post-merge main CI before handback. Use `.github/PULL_REQUEST_TEMPLATE.md`;
+fully resolved issues require `- Closes #N` under `## Closes`.
 
 ## Standing scope
 

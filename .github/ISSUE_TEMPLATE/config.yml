@@ -1,0 +1,6 @@
+---
+blank_issues_enabled: false
+contact_links:
+  - name: Maintenance policy
+    url: https://github.com/lgtm-raycast/brew/blob/main/docs/maintenance.md
+    about: Read the upstream adoption policy and maintenance scope before opening an issue.

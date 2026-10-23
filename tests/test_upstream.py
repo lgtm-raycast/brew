@@ -9,7 +9,9 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from assertpy import assert_that
+
+# The quality image omits test-only dependencies; tracker CI installs and exercises assertpy.
+from assertpy import assert_that  # pylint: disable=import-error
 from pytest import MonkeyPatch
 
 from scripts.upstream import github, intake

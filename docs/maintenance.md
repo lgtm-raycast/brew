@@ -130,7 +130,10 @@ Sol-6.1 subscription review support are tracked in [lgtm-ci #1204](https://githu
 ## Bootstrap CI and PR contract
 
 The repository uses SHA-pinned lgtm-ci for lintro quality, structured quality comments, extension and tracker test
-reports, security scanning and its PR summary, action-pinning validation, semantic titles, PR labels and assignment.
+reports, security scanning and its PR summary, action-pinning validation, semantic titles, PR labels and assignment. The
+committed `raycast-env.d.ts` is generated from `package.json` by `npm run build`; do not edit it by hand. It lets
+independent quality jobs type-check a fresh checkout, and the extension CI build rejects stale generated declarations.
+
 Raycast lint/build run after lintro; they validate extension manifests, metadata and the native build. They supplement
 lintro rather than replacing it. JSON and text lintro reports are uploaded by the quality workflow and the shared
 quality-summary publisher posts the standard sticky PR comment.

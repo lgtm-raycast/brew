@@ -14,8 +14,8 @@ uv run lintro fmt
 uv run lintro chk
 uv run lintro tst
 bun run test:coverage
-npm run lint
-npm run build
+bun run lint
+bun run build
 ```
 
 Raycast's lint/build owns extension-specific validation and runs last. Do not modify installed apps or run real Homebrew

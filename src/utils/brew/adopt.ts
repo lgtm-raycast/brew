@@ -443,12 +443,18 @@ export function shellSplit(line: string): string[] | undefined {
 /** `Pathname#expand_path` for the cases a path setting takes: `~`, `~/…`, relative. */
 function expandPath(value: string): string {
   if (value === "~") return os.homedir();
+  // Local app paths and Homebrew path settings intentionally support arbitrary user-selected locations.
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
   if (value.startsWith("~/")) return path.join(os.homedir(), value.slice(2));
+  // Local app paths and Homebrew path settings intentionally support arbitrary user-selected locations.
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
   return path.resolve(value);
 }
 
 /** Whether an app sits exactly where Homebrew would adopt it. */
 export function isAdoptableLocation(appPath: string, appdir: string = caskAppdir()): boolean {
+  // Local app paths and Homebrew path settings intentionally support arbitrary user-selected locations.
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
   return path.dirname(path.resolve(appPath)) === appdir;
 }
 
@@ -462,6 +468,8 @@ export function isAdoptableLocation(appPath: string, appdir: string = caskAppdir
  * so nothing else in this module catches them.
  */
 export function isMacAppStoreApp(appPath: string): boolean {
+  // Local app paths and Homebrew path settings intentionally support arbitrary user-selected locations.
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
   return existsSync(path.join(appPath, "Contents", "_MASReceipt", "receipt"));
 }
 
@@ -494,6 +502,8 @@ export function isOwnedByCurrentUser(appPath: string): boolean | undefined {
  * version is unknown, which the verdict already handles as its own case.
  */
 export async function readBundleVersion(appPath: string): Promise<string | undefined> {
+  // Local app paths and Homebrew path settings intentionally support arbitrary user-selected locations.
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
   const plist = path.join(appPath, "Contents", "Info.plist");
   try {
     const { stdout } = await execFileAsync("/usr/bin/plutil", ["-convert", "json", "-o", "-", plist]);
@@ -523,6 +533,8 @@ export async function missingLinkedComponents(
 ): Promise<string[]> {
   const missing: string[] = [];
   for (const relative of bundleRelativeLinkSources(entry, appBundleName)) {
+    // Local app paths and Homebrew path settings intentionally support arbitrary user-selected locations.
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
     if (!existsSync(path.join(appPath, relative))) missing.push(path.basename(relative));
   }
   return missing;

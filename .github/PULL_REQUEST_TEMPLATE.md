@@ -35,7 +35,7 @@
 - [ ] `uv run lintro tst`
 - [ ] `bun run test:coverage`
 - [ ] `uv run lintro fmt` and `uv run lintro chk`
-- [ ] `npm run lint` and `npm run build`
+- [ ] `bun run lint` and `bun run build`
 - [ ] Manual testing performed (if applicable)
 
 ## Checklist

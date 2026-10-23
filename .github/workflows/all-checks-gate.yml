@@ -16,3 +16,5 @@ jobs:
       checks: read
       contents: read
       statuses: read
+    with:
+      runner-image: ubuntu-26.04

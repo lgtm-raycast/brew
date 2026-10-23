@@ -18,6 +18,7 @@ jobs:
       contents: read
       packages: read
     with:
+      runner-image: ubuntu-26.04
       job-name: Lintro quality
       egress-policy: block
       egress-preset: quality
@@ -38,8 +39,7 @@ jobs:
       upload-coverage: true
       publish-test-summary: true
       job-name: Brew tests and Raycast build
-      # Alternate Linux runner path for the amd64 connectivity failures in lgtm-hq/lgtm-ci#1203.
-      runner-image: ubuntu-24.04-arm
+      runner-image: ubuntu-26.04
       egress-policy: block
       egress-preset: quality
   tracker:
@@ -49,6 +49,7 @@ jobs:
       contents: read
       pull-requests: write
     with:
+      runner-image: ubuntu-26.04
       python-version: "3.14"
       coverage: true
       coverage-threshold: 90
@@ -67,6 +68,7 @@ jobs:
       contents: read
       pull-requests: write
     with:
+      runner-image: ubuntu-26.04
       exit-code: ${{ needs.quality.outputs.exit-code }}
   security:
     uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-security-audit.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
@@ -74,6 +76,7 @@ jobs:
       contents: read
       packages: read
     with:
+      runner-image: ubuntu-26.04
       job-name: Security audit
   publish-security-summary:
     needs: security
@@ -86,10 +89,14 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+    with:
+      runner-image: ubuntu-26.04
   pinning:
     uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-validate-action-pinning.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
     permissions:
       contents: read
+    with:
+      runner-image: ubuntu-26.04
   title:
     if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
     uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-semantic-pr-title.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
@@ -100,7 +107,7 @@ jobs:
     name: Required CI
     if: always()
     needs: [quality, extension, tracker, security, pinning, title, publish-quality-summary, publish-security-summary]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     permissions:
       contents: read

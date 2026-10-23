@@ -2,23 +2,8 @@
 enforce:
   line_length: 120
 execution:
-  enabled_tools:
-    - actionlint
-    - bandit
-    - black
-    - gitleaks
-    - markdownlint
-    - mypy
-    - osv_scanner
-    - oxlint
-    - prettier
-    - pydoclint
-    - ruff
-    - shellcheck
-    - shfmt
-    - taplo
-    - trufflehog
-    - yamllint
+  # An empty allowlist considers every lintro tool; inapplicable tools self-skip.
+  enabled_tools: []
   exclude:
     - ".lintro/"
     - ".venv/"

@@ -188,7 +188,7 @@ assert.equal(totalForPeriod({ "30d": {} }, "30d"), undefined);
 // Version comparison. Every case below is one an adversarial review raised
 // against an earlier attempt — first string INEQUALITY (which called any
 // difference "outdated", in both directions), then a hand-rolled segment
-// ranker (which mis-ordered prereleases, patch levels, case variants and
+// ranker (which misordered prereleases, patch levels, case variants and
 // trailing zeros). The module now compares ONLY plain dotted numbers and
 // returns undefined for everything else.
 assert.equal(isOutdatedVersion("2.3.2", "2.4.0", { stripRevision: true }), true, "ipatool: genuinely behind");
@@ -214,7 +214,7 @@ assert.equal(compareVersions("5", "5.0"), 0, "5 and 5.0 are equal");
 assert.equal(compareVersions("5.0.0", "5"), 0);
 assert.equal(isOutdatedVersion("5", "5.0"), false, "5 must not read as behind 5.0");
 
-// Shapes this module refuses to rank. Each was mis-ordered by the previous
+// Shapes this module refuses to rank. Each was misordered by the previous
 // attempt; undefined means "ask brew", which is the correct answer here.
 for (const [a, b, why] of [
   ["1.0b2", "1.0", "beta vs final"],

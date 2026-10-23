@@ -55,6 +55,7 @@ def config() -> dict[str, Any]:
         "path": "extensions/brew",
         "baseline": BASE,
         "intake_label": "upstream",
+        "owner": "TurboCoder13",
     }
 
 
@@ -206,6 +207,8 @@ def test_full_cycle_creates_once_then_is_idempotent(repository_root: Path) -> No
     downstream = QueueGitHub([[], {}])
     body = intake.run(root=repository_root, repository="lgtm-raycast/brew", upstream=upstream, downstream=downstream)
     assert_that(downstream.calls[-1]["method"]).is_equal_to("POST")
+    assert_that(downstream.calls[-1]["payload"]["assignees"]).is_equal_to(["TurboCoder13"])
+    assert_that(downstream.calls[-1]["payload"]["labels"]).contains("upstream", "automation", "maintenance")
     again = QueueGitHub([[{"number": 7, "body": body}]])
     repeated = intake.run(
         root=repository_root,

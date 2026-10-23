@@ -1,10 +1,33 @@
-# Brew — maintained local edition
+# Brew — independently maintained Raycast fork
 
-Search, install, and manage Homebrew formulae and casks through Raycast. This standalone repository maintains the
-upstream Brew extension using lintro and `lgtm-hq/lgtm-ci`. Product behavior is initially preserved.
+[![CI](https://github.com/lgtm-raycast/brew/actions/workflows/ci.yml/badge.svg)](https://github.com/lgtm-raycast/brew/actions/workflows/ci.yml)
 
-This edition is installed locally and is not published to the Raycast Store. MIT attribution and filtered upstream
-history are retained. See [provenance](docs/provenance.md) and the [maintenance policy](docs/maintenance.md).
+Search, install, and manage Homebrew formulae and casks through Raycast. This is an independently maintained fork of the
+[original Brew extension](https://github.com/raycast/extensions/tree/main/extensions/brew) in
+[raycast/extensions](https://github.com/raycast/extensions), originally authored by
+[nhojb](https://www.raycast.com/nhojb) with contributions from the Raycast community.
+
+The extension's functionality, assets and original work come from those upstream authors. All author/contributor credits
+remain in [the manifest](package.json) and the imported Git history. The original **MIT license and Raycast copyright**
+remain in [LICENSE](LICENSE). Thank you to
+[upstream contributors](https://github.com/raycast/extensions/commits/main/extensions/brew).
+
+LGTM Raycast maintains this downstream using [lintro](https://github.com/lgtm-hq/py-lintro),
+[lgtm-ci](https://github.com/lgtm-hq/lgtm-ci), and explicit upstream assessment/adoption. The pilot adopted upstream
+snapshot [`645cb29`](https://github.com/raycast/extensions/commit/645cb29302e41f7730b0e68d84777feb0ad096a9). See
+[provenance and history mapping](docs/provenance.md) for the exact import and authorship details.
+
+This is a standalone downstream repository outside GitHub's fork network, maintained independently of Raycast. It is
+installed locally and is not published to the Raycast Store.
+
+## Project guides
+
+- [Contributing](CONTRIBUTING.md) and [agent operating agreement](AGENTS.md).
+- [Security and private reporting](SECURITY.md), [support](SUPPORT.md), and [code of conduct](CODE_OF_CONDUCT.md).
+- [Upstream maintenance policy](docs/maintenance.md), [upstream development notes](docs/upstream-notes.md), and
+  [change history](CHANGELOG.md).
+- [Organization standards](https://github.com/lgtm-raycast/.github) and
+  [current upstream intake](https://github.com/lgtm-raycast/brew/issues/3).
 
 ## Install or update on your Mac
 

@@ -173,7 +173,15 @@ def render_report(
     """
     lines = [
         MARKER,
-        "## Upstream intake",
+        "## Summary",
+        "",
+        "Durable assessment queue for upstream Brew changes and verified downstream adoption receipts.",
+        "",
+        "## Problem",
+        "",
+        "Upstream changes independently of this maintained fork; discovered changes need explicit dispositions.",
+        "",
+        "## Proposed Solution",
         "",
         f"Source: [{config['repository']}](https://github.com/{config['repository']}) / `{config['path']}`.",
         f"Imported baseline: `{config['baseline']}`.",
@@ -187,6 +195,8 @@ def render_report(
             "An owner-applied `upstream:approved` label queues a separate implementation "
             "session; it never authorizes Hermes feature work."
         ),
+        "",
+        "## Upstream changes",
         "",
         "| Commit | Upstream change | Disposition and implementation |",
         "| --- | --- | --- |",
@@ -204,6 +214,21 @@ def render_report(
         lines.extend(["", "No new path commits have been discovered."])
     lines.extend(
         [
+            "",
+            "## Implementation Notes",
+            "",
+            "Preserve this issue, its state and pending work. Record dispositions in `.upstream/decisions.json`.",
+            "Only an implementation PR merged to main counts as applied. The AI prompt scopes assessment work.",
+            "",
+            "## Benefits",
+            "",
+            "- One auditable queue without losing earlier unimplemented changes.",
+            "- Original upstream commit links and honest downstream implementation status.",
+            "",
+            "## References",
+            "",
+            "- [Maintenance policy](https://github.com/lgtm-raycast/brew/blob/main/docs/maintenance.md)",
+            "- [Provenance](https://github.com/lgtm-raycast/brew/blob/main/docs/provenance.md)",
             "",
             "<!-- lgtm-upstream-state "
             + json.dumps(state, separators=(",", ":")).replace("<", "\\u003c").replace(">", "\\u003e")
@@ -257,7 +282,8 @@ def run(root: Path, repository: str, upstream: GitHub, downstream: GitHub, dry_r
                 path=f"/repos/{repository}/issues",
                 payload={
                     "title": "chore(upstream): Brew intake and adoption status",
-                    "labels": [config["intake_label"]],
+                    "labels": [config["intake_label"], "automation", "maintenance"],
+                    "assignees": [config["owner"]],
                     "body": body,
                 },
             )

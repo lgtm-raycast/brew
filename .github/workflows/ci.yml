@@ -78,8 +78,9 @@ jobs:
     if: >-
       !cancelled() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name ==
       github.repository
-    # lgtm-ci v0.78.0
-    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-publish-security-audit-comment.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb
+    # The pinning validator requires the version beside this indivisible SHA reference.
+    # yamllint disable-line rule:line-length
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-publish-security-audit-comment.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
     permissions:
       contents: read
       pull-requests: write

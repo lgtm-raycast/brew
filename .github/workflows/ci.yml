@@ -20,7 +20,7 @@ jobs:
     with:
       runner-image: ubuntu-26.04
       job-name: Lintro quality
-      egress-policy: block
+      egress-policy: audit # TEMP: lgtm-hq/lgtm-ci#1207
       egress-preset: quality
   extension:
     uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-node.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
@@ -41,7 +41,7 @@ jobs:
       publish-test-summary: true
       job-name: Brew tests and Raycast build
       runner-image: ubuntu-26.04
-      egress-policy: block
+      egress-policy: audit # TEMP: lgtm-hq/lgtm-ci#1207
       egress-preset: quality
   tracker:
     uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-python.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
@@ -58,7 +58,7 @@ jobs:
       upload-coverage: false
       publish-test-summary: true
       job-name: Upstream tracker tests
-      egress-policy: block
+      egress-policy: audit # TEMP: lgtm-hq/lgtm-ci#1207
       egress-preset: pypi
   publish-quality-summary:
     needs: quality

@@ -43,6 +43,7 @@ jobs:
       actions: read
       contents: write
     with:
+      egress-policy: audit # TEMP: lgtm-hq/lgtm-ci#1207
       runner-image: ubuntu-26.04
       artifact-name: release-build-22
       artifact-path: artifacts

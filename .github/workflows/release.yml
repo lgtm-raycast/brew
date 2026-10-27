@@ -34,7 +34,7 @@ jobs:
       build-artifact-path: artifacts
       artifact-prefix: release
       job-name: Validate release
-      egress-policy: block
+      egress-policy: audit # TEMP: lgtm-hq/lgtm-ci#1207
       egress-preset: quality
   publish:
     needs: validate

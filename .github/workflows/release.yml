@@ -17,7 +17,7 @@ jobs:
       pull-requests: write
   validate:
     needs: checks
-    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-node.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-node.yml@2097a900753e3e5ad0e336483501b278e99855ae # v0.78.1
     permissions:
       actions: read
       contents: read
@@ -38,7 +38,7 @@ jobs:
       egress-preset: quality
   publish:
     needs: validate
-    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-github-release.yml@9ea778eb4e6b876d60b7b3d7d0d0aee5182717bb # v0.78.0
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-github-release.yml@2097a900753e3e5ad0e336483501b278e99855ae # v0.78.1
     permissions:
       actions: read
       contents: write

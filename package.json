@@ -287,7 +287,7 @@
     "prettier": "^3.9.4",
     "react": "^19.2.4",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.12"
+    "vitest": "4.1.12"
   },
   "scripts": {
     "build": "ray build -e dist",

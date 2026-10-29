@@ -17,7 +17,7 @@ jobs:
       pull-requests: write
   validate:
     needs: checks
-    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-node.yml@2097a900753e3e5ad0e336483501b278e99855ae # v0.78.1
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-node.yml@8f0fd9339df5d30a529aa572ceb51345b8be33a0 # v0.79.2
     permissions:
       actions: read
       contents: read
@@ -34,16 +34,16 @@ jobs:
       build-artifact-path: artifacts
       artifact-prefix: release
       job-name: Validate release
-      egress-policy: audit # TEMP: lgtm-hq/lgtm-ci#1207
+      egress-policy: block
       egress-preset: quality
   publish:
     needs: validate
-    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-github-release.yml@2097a900753e3e5ad0e336483501b278e99855ae # v0.78.1
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-github-release.yml@8f0fd9339df5d30a529aa572ceb51345b8be33a0 # v0.79.2
     permissions:
       actions: read
       contents: write
     with:
-      egress-policy: audit # TEMP: lgtm-hq/lgtm-ci#1207
+      egress-policy: block
       runner-image: ubuntu-26.04
       artifact-name: release-build-22
       artifact-path: artifacts
